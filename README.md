@@ -1,4 +1,4 @@
-# 🚀 Akash Kale - Portfolio
+# 🚀 Akash Kale - 3D DevOps Portfolio
 
 A premium, interactive 3D portfolio website designed for DevOps Engineers, SREs, and Product Engineers. This project features a modern dark theme (Orange & Black), glassmorphism UI, and immersive 3D elements powered by [Three.js](https://threejs.org/).
 
@@ -84,3 +84,7 @@ You can host this for **free** on GitHub Pages or Netlify.
 
 ## 📄 License
 
+This project is free to use and customize for your personal portfolio.
+
+---
+*Built with ❤️ by Akash Kale's AI Assistant*

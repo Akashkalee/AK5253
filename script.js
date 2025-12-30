@@ -161,26 +161,53 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Form Submission (Prevent Default)
+    // Form Submission (Formspree Integration)
     const form = document.getElementById('contact-form');
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = form.querySelector('.btn-submit');
         const originalText = btn.innerHTML;
 
+        // Get form data
+        const formData = new FormData(form);
+
+        // SHOW LOADING STATE
         btn.innerHTML = '<span>Sending...</span> <i class="fas fa-spinner fa-spin"></i>';
+        btn.disabled = true;
 
-        // Simulate sending
-        setTimeout(() => {
-            btn.innerHTML = '<span>Message Sent!</span> <i class="fas fa-check"></i>';
-            btn.style.background = '#e17055'; // Success color (Orange)
-            form.reset();
+        try {
+            // REPLACE THE URL BELOW WITH YOUR ACTUAL FORMSPREE LINK
+            const response = await fetch("https://formspree.io/f/mykyvrae", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
 
+            if (response.ok) {
+                // SUCCESS STATE
+                btn.innerHTML = '<span>Message Sent!</span> <i class="fas fa-check"></i>';
+                btn.style.background = '#2ecc71'; // Success green
+                form.reset();
+            } else {
+                // SERVER ERROR
+                const data = await response.json();
+                throw new Error(data.errors ? data.errors[0].message : "Submission failed");
+            }
+        } catch (error) {
+            // ERROR STATE
+            console.error(error);
+            btn.innerHTML = '<span>Error! Try Again</span> <i class="fas fa-exclamation-triangle"></i>';
+            btn.style.background = '#e74c3c'; // Error red
+        } finally {
+            // RESET BUTTON AFTER DELAY
             setTimeout(() => {
                 btn.innerHTML = originalText;
-                btn.style.background = ''; // Reset to gradient
-            }, 3000);
-        }, 2000);
+                btn.style.background = ''; // Reset to original CSS
+                btn.disabled = false;
+            }, 5000);
+        }
     });
 
     // Three.js Background Animation (Main)
